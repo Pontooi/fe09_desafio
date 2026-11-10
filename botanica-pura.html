@@ -1,0 +1,568 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Botânica Pura — Beleza limpa, consciente e brasileira</title>
+<style>
+  :root {
+    --bg: #fdfbf7;
+    --forest: #2d5a43;
+    --forest-dark: #214534;
+    --terracotta: #c26d38;
+    --terracotta-dark: #a85826;
+    --border: #e7e5e0;
+    --text: #24352c;
+    --muted: #6b7a70;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  ul { list-style: none; }
+  .container { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+  section { scroll-margin-top: 76px; }
+
+  /* ===== NAVBAR ===== */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(253, 251, 247, 0.96);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 0;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    color: var(--forest);
+    white-space: nowrap;
+  }
+  .logo-mark {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--forest);
+    color: #fff;
+    font-size: 1rem;
+  }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 2px;
+    background: var(--terracotta);
+    transition: width 0.25s;
+  }
+  .nav-links a:hover { color: var(--terracotta); }
+  .nav-links a:hover::after { width: 100%; }
+  .hamb {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--forest);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  .nav-mobile {
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 16px 14px;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+  }
+  .nav-mobile.on { display: flex; }
+  .nav-mobile a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.94rem;
+    font-weight: 600;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-mobile a:last-child { border-bottom: none; }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 440px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 70px 16px;
+    color: #fff;
+    background:
+      linear-gradient(135deg, rgba(24, 52, 38, 0.72), rgba(45, 90, 67, 0.62)),
+      url("https://picsum.photos/seed/botanica-hero/1600/900") center/cover no-repeat;
+  }
+  .hero-content { max-width: 620px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(1.7rem, 5vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.18;
+    margin-bottom: 14px;
+  }
+  .hero p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0 auto 26px;
+    max-width: 520px;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .btn-primary {
+    display: inline-block;
+    background: var(--terracotta);
+    color: #fff;
+    padding: 13px 28px;
+    border-radius: 30px;
+    font-weight: 800;
+    font-size: 0.92rem;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--terracotta-dark); }
+  .btn-outline {
+    display: inline-block;
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    padding: 11px 26px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    text-decoration: none;
+    text-align: center;
+  }
+  .btn-outline:hover { background: rgba(255, 255, 255, 0.12); border-color: #fff; }
+
+  /* ===== SELOS ===== */
+  .selos { background: var(--white); border-bottom: 1px solid var(--border); padding: 22px 0; }
+  .selos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    text-align: center;
+  }
+  .selo { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; }
+  .selo-icone {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(45, 90, 67, 0.1);
+    color: var(--forest);
+    font-size: 1.15rem;
+  }
+  .selo strong { font-size: 0.86rem; color: var(--forest); }
+  .selo span { font-size: 0.74rem; color: var(--muted); }
+
+  /* ===== SEÇÕES ===== */
+  .section { padding: 60px 0; }
+  .section-alt { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .section-title { text-align: center; max-width: 600px; margin: 0 auto 36px; }
+  .section-title h2 { font-size: clamp(1.4rem, 4vw, 1.9rem); color: var(--forest); margin-bottom: 8px; }
+  .section-title p { color: var(--muted); font-size: 0.94rem; }
+
+  /* Benefícios */
+  .beneficios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 18px;
+  }
+  .beneficio {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .beneficio-icone {
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(194, 109, 56, 0.12);
+    color: var(--terracotta);
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  .beneficio h3 { font-size: 1.05rem; color: var(--forest); margin-bottom: 6px; }
+  .beneficio p { color: var(--muted); font-size: 0.87rem; }
+
+  /* Produtos */
+  .produtos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    gap: 20px;
+  }
+  .produto {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .produto-img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    background: var(--border);
+  }
+  .produto-corpo { padding: 18px 18px 20px; display: flex; flex-direction: column; flex: 1; }
+  .produto-tag {
+    align-self: flex-start;
+    background: rgba(45, 90, 67, 0.1);
+    color: var(--forest);
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    margin-bottom: 8px;
+  }
+  .produto h3 { font-size: 1.05rem; color: var(--forest); margin-bottom: 4px; }
+  .produto p { color: var(--muted); font-size: 0.84rem; margin-bottom: 14px; }
+  .produto-preco { font-size: 1.3rem; font-weight: 800; color: var(--terracotta); margin-top: auto; margin-bottom: 12px; }
+  .produto .btn-comprar {
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    background: var(--forest);
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.86rem;
+  }
+  .produto .btn-comprar:hover { background: var(--forest-dark); }
+
+  /* Depoimentos */
+  .depoimentos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 18px;
+  }
+  .depoimento {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 22px;
+    display: flex;
+    flex-direction: column;
+  }
+  .depoimento .estrelas { color: var(--terracotta); font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 10px; }
+  .depoimento p { color: var(--text); font-size: 0.9rem; font-style: italic; margin-bottom: 16px; flex: 1; }
+  .depoimento-autor { display: flex; align-items: center; gap: 10px; }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--forest);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .depoimento-autor strong { display: block; font-size: 0.86rem; color: var(--forest); }
+  .depoimento-autor span { font-size: 0.76rem; color: var(--muted); }
+
+  /* CTA final */
+  .cta-final {
+    background: linear-gradient(135deg, var(--forest), var(--forest-dark));
+    color: #fff;
+    text-align: center;
+    padding: 54px 16px;
+  }
+  .cta-final h2 { font-size: clamp(1.4rem, 4vw, 1.9rem); margin-bottom: 10px; }
+  .cta-final p { color: rgba(255, 255, 255, 0.9); font-size: 0.94rem; margin: 0 auto 24px; max-width: 520px; }
+
+  /* Footer */
+  .footer { background: var(--forest-dark); color: rgba(255, 255, 255, 0.85); padding: 34px 16px 24px; }
+  .footer-inner { max-width: 1080px; margin: 0 auto; text-align: center; }
+  .footer .logo { justify-content: center; color: #fff; margin-bottom: 10px; }
+  .footer .logo-mark { background: rgba(255, 255, 255, 0.15); }
+  .footer p { font-size: 0.84rem; }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+    margin: 16px 0;
+    font-size: 0.84rem;
+  }
+  .footer-links a { color: rgba(255, 255, 255, 0.85); text-decoration: none; }
+  .footer-links a:hover { color: #fff; text-decoration: underline; }
+  .footer-copy {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: 16px;
+    margin-top: 8px;
+    font-size: 0.76rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ===== RESPONSIVO ===== */
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+    .hamb { display: block; }
+    .hero { min-height: 380px; padding: 56px 16px; }
+  }
+
+  @media (max-width: 480px) {
+    .container { padding: 0 12px; }
+    .selos-grid { grid-template-columns: 1fr; gap: 18px; }
+    .selo { flex-direction: row; justify-content: center; text-align: left; gap: 10px; }
+    .hero-actions { flex-direction: column; }
+    .btn-primary, .btn-outline { width: 100%; }
+    .section { padding: 44px 0; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container nav-row">
+      <a href="#inicio" class="logo"><span class="logo-mark">&#127807;</span> Botânica Pura</a>
+      <nav class="nav-links" aria-label="Navegação principal">
+        <a href="#inicio">Início</a>
+        <a href="#beneficios">Benefícios</a>
+        <a href="#produtos">Produtos</a>
+        <a href="#depoimentos">Depoimentos</a>
+      </nav>
+      <button class="hamb" onclick="toggleMenu()" aria-label="Abrir menu">&#9776;</button>
+    </div>
+    <div class="nav-mobile" id="menuMobile">
+      <a href="#inicio" onclick="fecharMenu()">Início</a>
+      <a href="#beneficios" onclick="fecharMenu()">Benefícios</a>
+      <a href="#produtos" onclick="fecharMenu()">Produtos</a>
+      <a href="#depoimentos" onclick="fecharMenu()">Depoimentos</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-content">
+        <span class="hero-badge">COSMÉTICOS NATURAIS E VEGANOS</span>
+        <h1>Beleza limpa, consciente e brasileira</h1>
+        <p>Fórmulas orgânicas com ativos da nossa flora, embalagens sem plástico e zero testes em animais. Cuide da sua pele e do planeta ao mesmo tempo.</p>
+        <div class="hero-actions">
+          <a href="#produtos" class="btn-primary">Conhecer os produtos</a>
+          <a href="#beneficios" class="btn-outline">Nossa essência</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="selos" aria-label="Selos de confiança">
+      <div class="container selos-grid">
+        <div class="selo">
+          <span class="selo-icone">&#128007;</span>
+          <div><strong>Cruelty-free</strong><span>Sem testes em animais</span></div>
+        </div>
+        <div class="selo">
+          <span class="selo-icone">&#9851;</span>
+          <div><strong>Zero Plástico</strong><span>Embalagens reutilizáveis</span></div>
+        </div>
+        <div class="selo">
+          <span class="selo-icone">&#127793;</span>
+          <div><strong>Ativos Puros</strong><span>Ingredientes orgânicos</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="beneficios">
+      <div class="container">
+        <div class="section-title">
+          <h2>Por que escolher a Botânica Pura?</h2>
+          <p>Beleza que respeita a sua pele, os animais e a natureza.</p>
+        </div>
+        <div class="beneficios">
+          <div class="beneficio">
+            <span class="beneficio-icone">&#127807;</span>
+            <h3>Ingredientes naturais</h3>
+            <p>Ativos orgânicos da biodiversidade brasileira, livres de parabenos e sulfatos.</p>
+          </div>
+          <div class="beneficio">
+            <span class="beneficio-icone">&#9851;</span>
+            <h3>Sustentável de verdade</h3>
+            <p>Embalagens de vidro e alumínio, refis econômicos e logística de baixa emissão.</p>
+          </div>
+          <div class="beneficio">
+            <span class="beneficio-icone">&#10084;</span>
+            <h3>Feito no Brasil</h3>
+            <p>Produção artesanal em pequenos lotes, com comércio justo para comunidades locais.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="produtos">
+      <div class="container">
+        <div class="section-title">
+          <h2>Nossos favoritos</h2>
+          <p>Três passos simples para uma rotina de beleza consciente.</p>
+        </div>
+        <div class="produtos">
+          <article class="produto">
+            <img class="produto-img" src="https://picsum.photos/seed/botanica-serum/600/400" alt="Sérum facial Botânica Pura">
+            <div class="produto-corpo">
+              <span class="produto-tag">ROTINA FACIAL</span>
+              <h3>Sérum Facial</h3>
+              <p>Concentrado de vitamina C e açaí para iluminar e uniformizar a pele.</p>
+              <span class="produto-preco">R$ 79,90</span>
+              <a href="#" class="btn-comprar">Adicionar ao carrinho</a>
+            </div>
+          </article>
+
+          <article class="produto">
+            <img class="produto-img" src="https://picsum.photos/seed/botanica-hidratante/600/400" alt="Hidratante corporal Botânica Pura">
+            <div class="produto-corpo">
+              <span class="produto-tag">CORPO</span>
+              <h3>Hidratante Corporal</h3>
+              <p>Manteiga de cupuaçu e óleo de castanha para hidratação profunda.</p>
+              <span class="produto-preco">R$ 89,90</span>
+              <a href="#" class="btn-comprar">Adicionar ao carrinho</a>
+            </div>
+          </article>
+
+          <article class="produto">
+            <img class="produto-img" src="https://picsum.photos/seed/botanica-tonico/600/400" alt="Tônico facial Botânica Pura">
+            <div class="produto-corpo">
+              <span class="produto-tag">ROTINA FACIAL</span>
+              <h3>Tônico Facial</h3>
+              <p>Água de hamamélis e aloe vera para equilibrar e refrescar a pele.</p>
+              <span class="produto-preco">R$ 54,90</span>
+              <a href="#" class="btn-comprar">Adicionar ao carrinho</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="depoimentos">
+      <div class="container">
+        <div class="section-title">
+          <h2>Quem usa, ama</h2>
+          <p>Histórias de quem trocou o plástico pelo vidro e a química pelo natural.</p>
+        </div>
+        <div class="depoimentos">
+          <div class="depoimento">
+            <div class="estrelas">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p>"O sérum mudou minha pele em poucas semanas. E saber que não tem plástico na embalagem faz toda a diferença."</p>
+            <div class="depoimento-autor">
+              <span class="avatar">MC</span>
+              <div><strong>Mariana Costa</strong><span>São Paulo, SP</span></div>
+            </div>
+          </div>
+          <div class="depoimento">
+            <div class="estrelas">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p>"Hidratante maravilhoso, cheiro suave e textura leve. Virei cliente fiel da marca e dos refis."</p>
+            <div class="depoimento-autor">
+              <span class="avatar">RS</span>
+              <div><strong>Rafael Souza</strong><span>Belo Horizonte, MG</span></div>
+            </div>
+          </div>
+          <div class="depoimento">
+            <div class="estrelas">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p>"Comprei o kit completo e amei. Produtos brasileiros, veganos e que realmente funcionam. Recomendo demais!"</p>
+            <div class="depoimento-autor">
+              <span class="avatar">JL</span>
+              <div><strong>Juliana Lima</strong><span>Curitiba, PR</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-final">
+      <h2>Receba o kit de boas-vindas</h2>
+      <p>Ganhe 10% de desconto na primeira compra e receba dicas de beleza consciente no seu e-mail.</p>
+      <a href="#produtos" class="btn-primary">Quero meu desconto</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="#inicio" class="logo"><span class="logo-mark">&#127807;</span> Botânica Pura</a>
+      <p>Beleza limpa, consciente e brasileira.</p>
+      <nav class="footer-links" aria-label="Links do rodapé">
+        <a href="#beneficios">Benefícios</a>
+        <a href="#produtos">Produtos</a>
+        <a href="#depoimentos">Depoimentos</a>
+        <a href="mailto:contato@botanicapura.com.br">Contato</a>
+      </nav>
+      <div class="footer-copy">
+        <p>&copy; 2026 Botânica Pura Cosméticos Naturais. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById("menuMobile").classList.toggle("on");
+  }
+
+  function fecharMenu() {
+    document.getElementById("menuMobile").classList.remove("on");
+  }
+</script>
+</body>
+</html>

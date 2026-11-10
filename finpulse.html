@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinPulse — Gestão Financeira para Pequenas Empresas</title>
+<style>
+  :root {
+    --bg: #0b1120;
+    --surface: #131d31;
+    --surface-2: #18243b;
+    --green: #10b981;
+    --green-dark: #059669;
+    --cyan: #38bdf8;
+    --border: #26354f;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  ul { list-style: none; }
+  .container { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+  section { scroll-margin-top: 76px; }
+
+  /* ===== NAVBAR ===== */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(11, 17, 32, 0.94);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    text-decoration: none;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .logo-mark {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    color: #06121f;
+    font-size: 0.95rem;
+    font-weight: 900;
+  }
+  .nav-links { display: flex; align-items: center; gap: 22px; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-actions { display: flex; align-items: center; gap: 10px; }
+  .btn-ghost {
+    display: inline-block;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+  .btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+  .hamb {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  .nav-mobile {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 16px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+  .nav-mobile.on { display: flex; }
+  .nav-mobile a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-mobile a:last-child { border-bottom: none; }
+
+  /* ===== HERO ===== */
+  .hero { padding: 52px 0 36px; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 32px;
+    align-items: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--green);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    font-weight: 800;
+    line-height: 1.18;
+    letter-spacing: -0.5px;
+    margin-bottom: 14px;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    color: var(--muted);
+    font-size: 0.98rem;
+    margin-bottom: 22px;
+    max-width: 480px;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .btn-primary {
+    display: inline-block;
+    background: var(--green);
+    color: #04140d;
+    padding: 13px 22px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.92rem;
+    text-decoration: none;
+    text-align: center;
+  }
+  .btn-primary:hover { background: var(--green-dark); color: #fff; }
+  .btn-secondary {
+    display: inline-block;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 13px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    text-decoration: none;
+    text-align: center;
+  }
+  .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+  .garantias { display: flex; flex-wrap: wrap; gap: 14px; color: var(--muted); font-size: 0.8rem; }
+  .garantias span::before { content: "✓ "; color: var(--green); font-weight: 800; }
+
+  /* Mockup */
+  .mockup {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  }
+  .mockup-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 12px;
+    background: #08101e;
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot.r { background: #ef4444; }
+  .dot.y { background: #f59e0b; }
+  .dot.g { background: var(--green); }
+  .mockup-title { margin-left: 8px; font-size: 0.72rem; color: var(--muted); }
+  .mockup-body { padding: 16px; }
+  .mockup-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+  .mockup-label { display: block; font-size: 0.72rem; color: var(--muted); }
+  .mockup-value { font-size: 1.45rem; font-weight: 800; color: #fff; }
+  .badge-up {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--green);
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 7px;
+    height: 92px;
+    padding: 10px;
+    background: #08101e;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 14px;
+  }
+  .chart span {
+    flex: 1;
+    background: linear-gradient(180deg, var(--cyan), rgba(56, 189, 248, 0.25));
+    border-radius: 4px 4px 0 0;
+  }
+  .chart span:nth-child(1) { height: 35%; }
+  .chart span:nth-child(2) { height: 55%; }
+  .chart span:nth-child(3) { height: 42%; }
+  .chart span:nth-child(4) { height: 70%; }
+  .chart span:nth-child(5) { height: 60%; }
+  .chart span:nth-child(6) { height: 88%; background: linear-gradient(180deg, var(--green), rgba(16, 185, 129, 0.25)); }
+  .chart span:nth-child(7) { height: 76%; }
+  .mockup-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .mockup-row strong { color: var(--text); }
+
+  /* ===== MÉTRICAS ===== */
+  .stats {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(19, 29, 49, 0.45);
+    padding: 22px 0;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    text-align: center;
+  }
+  .stats-grid strong { display: block; font-size: clamp(1.3rem, 4vw, 1.8rem); color: var(--cyan); }
+  .stats-grid span { font-size: 0.78rem; color: var(--muted); }
+
+  /* ===== SEÇÕES ===== */
+  .section { padding: 56px 0; }
+  .section-title { text-align: center; max-width: 600px; margin: 0 auto 32px; }
+  .section-title h2 { font-size: clamp(1.4rem, 4vw, 1.9rem); margin-bottom: 8px; }
+  .section-title p { color: var(--muted); font-size: 0.92rem; }
+
+  /* Bento */
+  .bento { display: grid; grid-template-columns: 1.35fr 1fr; gap: 16px; }
+  .bento-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+  }
+  .bento-card.big {
+    grid-row: span 2;
+    background: linear-gradient(150deg, var(--surface-2), var(--surface));
+    border-color: rgba(56, 189, 248, 0.4);
+  }
+  .bento-tag {
+    align-self: flex-start;
+    background: rgba(56, 189, 248, 0.14);
+    color: var(--cyan);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .bento-card h3 { font-size: 1.1rem; margin-bottom: 8px; color: #fff; }
+  .bento-card.big h3 { font-size: 1.35rem; }
+  .bento-card p { color: var(--muted); font-size: 0.88rem; }
+  .bento-icon {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(16, 185, 129, 0.14);
+    color: var(--green);
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  .bento-stat { text-align: center; justify-content: center; background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.35); }
+  .bento-stat strong { display: block; font-size: 2.1rem; font-weight: 800; color: var(--green); line-height: 1.1; }
+  .bento-stat span { color: var(--muted); font-size: 0.82rem; }
+  .bento-list { margin-top: 16px; display: grid; gap: 8px; }
+  .bento-list li { color: var(--text); font-size: 0.85rem; }
+  .bento-list li::before { content: "✓ "; color: var(--green); font-weight: 800; }
+
+  /* Preços */
+  .pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr)); gap: 18px; max-width: 720px; margin: 0 auto; }
+  .plan {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 26px 22px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .plan.destaque {
+    border-color: var(--green);
+    box-shadow: 0 12px 30px rgba(16, 185, 129, 0.18);
+  }
+  .plan-tag {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--green);
+    color: #04140d;
+    font-size: 0.66rem;
+    font-weight: 900;
+    letter-spacing: 0.4px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .plan h3 { font-size: 1.15rem; margin-bottom: 4px; color: #fff; }
+  .plan .desc { color: var(--muted); font-size: 0.84rem; margin-bottom: 16px; }
+  .plan .price { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 4px; }
+  .plan .price span { font-size: 0.85rem; color: var(--muted); font-weight: 500; }
+  .plan .note { color: var(--muted); font-size: 0.76rem; margin-bottom: 18px; }
+  .plan ul { display: grid; gap: 8px; margin-bottom: 24px; font-size: 0.86rem; color: var(--text); }
+  .plan ul li::before { content: "✓ "; color: var(--green); font-weight: 800; }
+  .plan .btn-plan {
+    margin-top: auto;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 11px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.88rem;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .plan .btn-plan:hover { border-color: var(--cyan); color: var(--cyan); }
+  .plan.destaque .btn-plan { background: var(--green); color: #04140d; border-color: var(--green); }
+  .plan.destaque .btn-plan:hover { background: var(--green-dark); color: #fff; }
+  .pricing-foot { text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: 22px; }
+
+  /* FAQ */
+  .faq { max-width: 680px; margin: 0 auto; display: grid; gap: 10px; }
+  .faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .faq-q {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 15px 18px;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+  }
+  .faq-q:hover { color: var(--cyan); }
+  .faq-icon { color: var(--cyan); font-size: 1.1rem; transition: transform 0.25s; flex-shrink: 0; }
+  .faq-a { display: none; padding: 0 18px 16px; color: var(--muted); font-size: 0.88rem; }
+  .faq-item.on .faq-a { display: block; }
+  .faq-item.on .faq-icon { transform: rotate(45deg); }
+
+  /* Footer */
+  .footer { background: #08101e; border-top: 1px solid var(--border); padding: 40px 0 20px; }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+    gap: 24px;
+    margin-bottom: 26px;
+  }
+  .footer-brand .logo { margin-bottom: 10px; }
+  .footer-brand p { color: var(--muted); font-size: 0.84rem; max-width: 260px; }
+  .footer-col h4 { color: #fff; font-size: 0.86rem; margin-bottom: 10px; }
+  .footer-col a {
+    display: block;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.84rem;
+    margin-bottom: 6px;
+  }
+  .footer-col a:hover { color: var(--cyan); }
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.78rem;
+  }
+
+  /* ===== RESPONSIVO ===== */
+  @media (max-width: 860px) {
+    .nav-links, .nav-actions .btn-ghost { display: none; }
+    .hamb { display: block; }
+    .hero-grid { grid-template-columns: 1fr; gap: 26px; }
+    .hero-info { text-align: center; }
+    .hero p { margin-left: auto; margin-right: auto; }
+    .hero-actions, .garantias { justify-content: center; }
+    .bento { grid-template-columns: 1fr; }
+    .bento-card.big { grid-row: auto; }
+  }
+
+  @media (max-width: 480px) {
+    .container { padding: 0 12px; }
+    .hero { padding-top: 36px; }
+    .hero-actions { flex-direction: column; }
+    .btn-primary, .btn-secondary { width: 100%; }
+    .stats-grid { grid-template-columns: 1fr; gap: 16px; }
+    .plan { padding: 24px 18px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container nav-row">
+      <a href="#inicio" class="logo"><span class="logo-mark">FP</span> FinPulse</a>
+      <nav class="nav-links" aria-label="Navegação principal">
+        <a href="#recursos">Recursos</a>
+        <a href="#precos">Planos</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="#precos" class="btn-ghost">Começar grátis</a>
+        <button class="hamb" onclick="toggleMenu()" aria-label="Abrir menu">&#9776;</button>
+      </div>
+    </div>
+    <div class="nav-mobile" id="menuMobile">
+      <a href="#recursos" onclick="fecharMenu()">Recursos</a>
+      <a href="#precos" onclick="fecharMenu()">Planos</a>
+      <a href="#faq" onclick="fecharMenu()">FAQ</a>
+      <a href="#precos" onclick="fecharMenu()">Começar 14 Dias Grátis</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container hero-grid">
+        <div class="hero-info">
+          <span class="badge">GESTÃO FINANCEIRA SIMPLES</span>
+          <h1>Automatize seu <span>fluxo de caixa</span> e emita notas sem dor de cabeça</h1>
+          <p>O FinPulse conecta suas contas, concilia entradas e saídas e emite NF-e em poucos cliques. Feito para micro e pequenas empresas que querem crescer com controle.</p>
+          <div class="hero-actions">
+            <a href="#precos" class="btn-primary">Começar 14 Dias Grátis</a>
+            <a href="#recursos" class="btn-secondary">Ver recursos</a>
+          </div>
+          <div class="garantias">
+            <span>Sem cartão de crédito</span>
+            <span>Cancele quando quiser</span>
+          </div>
+        </div>
+
+        <div class="mockup" aria-hidden="true">
+          <div class="mockup-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="mockup-title">FinPulse · Painel financeiro</span>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-top">
+              <div>
+                <span class="mockup-label">Saldo em caixa</span>
+                <strong class="mockup-value">R$ 42.850,00</strong>
+              </div>
+              <span class="badge-up">+18,4%</span>
+            </div>
+            <div class="chart">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="mockup-row"><span>NF-e emitidas hoje</span><strong>12</strong></div>
+            <div class="mockup-row"><span>Contas conciliadas</span><strong>100%</strong></div>
+            <div class="mockup-row"><span>Próximo vencimento</span><strong>em 3 dias</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="container stats-grid">
+        <div><strong>99,9%</strong><span>Disponibilidade</span></div>
+        <div><strong>8h/semana</strong><span>Economizadas em planilhas</span></div>
+        <div><strong>3.500+</strong><span>Pequenas empresas ativas</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="recursos">
+      <div class="container">
+        <div class="section-title">
+          <h2>Tudo que sua empresa precisa em um só lugar</h2>
+          <p>Menos planilhas, mais tempo para cuidar do seu negócio.</p>
+        </div>
+
+        <div class="bento">
+          <div class="bento-card big">
+            <div>
+              <span class="bento-tag">FLUXO AUTOMÁTICO</span>
+              <span class="bento-icon">&#8635;</span>
+              <h3>Seu caixa atualizado sem esforço</h3>
+              <p>Conecte suas contas bancárias e o FinPulse categoriza cada entrada e saída automaticamente. Visualize o saldo real da empresa em tempo real, sem digitar uma linha sequer.</p>
+            </div>
+            <ul class="bento-list">
+              <li>Conciliação bancária automática</li>
+              <li>Alertas de contas a pagar e receber</li>
+              <li>Relatórios prontos para o contador</li>
+            </ul>
+          </div>
+
+          <div class="bento-card">
+            <div>
+              <span class="bento-icon">&#128196;</span>
+              <h3>NF-e em 1 clique</h3>
+              <p>Emita notas fiscais em segundos com cálculo de impostos automático e envio direto para o cliente.</p>
+            </div>
+          </div>
+
+          <div class="bento-card">
+            <div>
+              <span class="bento-icon">&#128737;</span>
+              <h3>Segurança de banco</h3>
+              <p>Criptografia ponta a ponta, backup diário e total conformidade com a LGPD para proteger seus dados.</p>
+            </div>
+          </div>
+
+          <div class="bento-card bento-stat">
+            <strong>0</strong>
+            <span>planilhas manuais no fim do mês</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="precos">
+      <div class="container">
+        <div class="section-title">
+          <h2>Planos que cabem no seu negócio</h2>
+          <p>Comece grátis por 14 dias. Depois escolha o plano ideal para o seu momento.</p>
+        </div>
+
+        <div class="pricing">
+          <div class="plan">
+            <h3>MEI</h3>
+            <p class="desc">Para quem está começando a organizar as finanças.</p>
+            <div class="price">R$ 39 <span>/mês</span></div>
+            <p class="note">ou R$ 390 por ano</p>
+            <ul>
+              <li>1 empresa cadastrada</li>
+              <li>Até 30 NF-e por mês</li>
+              <li>Fluxo de caixa automático</li>
+              <li>Suporte por e-mail</li>
+            </ul>
+            <a href="#inicio" class="btn-plan">Começar 14 Dias Grátis</a>
+          </div>
+
+          <div class="plan destaque">
+            <span class="plan-tag">MAIS ESCOLHIDO</span>
+            <h3>PME Pro</h3>
+            <p class="desc">Para empresas em crescimento que precisam de escala.</p>
+            <div class="price">R$ 89 <span>/mês</span></div>
+            <p class="note">ou R$ 890 por ano</p>
+            <ul>
+              <li>Até 3 empresas cadastradas</li>
+              <li>NF-e ilimitadas</li>
+              <li>Conciliação bancária avançada</li>
+              <li>Relatórios e suporte prioritário</li>
+            </ul>
+            <a href="#inicio" class="btn-plan">Começar 14 Dias Grátis</a>
+          </div>
+        </div>
+        <p class="pricing-foot">Todos os planos incluem teste gratuito de 14 dias, sem necessidade de cartão de crédito.</p>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-title">
+          <h2>Perguntas frequentes</h2>
+          <p>Dúvidas sobre integração bancária e emissão de notas? A gente responde.</p>
+        </div>
+
+        <div class="faq">
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Como funciona a integração bancária? <span class="faq-icon">+</span></button>
+            <div class="faq-a"><p>Você conecta suas contas em poucos cliques por meio de uma integração segura com os principais bancos brasileiros. O FinPulse importa extratos, categoriza as transações e mantém seu fluxo de caixa atualizado automaticamente.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Consigo emitir NF-e direto pelo FinPulse? <span class="faq-icon">+</span></button>
+            <div class="faq-a"><p>Sim. A emissão de notas fiscais eletrônicas está incluída nos planos e leva poucos segundos. O sistema calcula os impostos e envia o documento para o cliente automaticamente.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Preciso de cartão de crédito para testar? <span class="faq-icon">+</span></button>
+            <div class="faq-a"><p>Não. O teste de 14 dias é totalmente gratuito e não exige cartão de crédito. Você só escolhe um plano se decidir continuar depois do período de teste.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Meus dados financeiros estão seguros? <span class="faq-icon">+</span></button>
+            <div class="faq-a"><p>Sim. Usamos criptografia de ponta a ponta, backup diário e seguimos as diretrizes da LGPD. Seus dados nunca são compartilhados com terceiros sem autorização.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">Posso cancelar quando quiser? <span class="faq-icon">+</span></button>
+            <div class="faq-a"><p>Pode. Não há fidelidade nem multa de cancelamento. Você gerencia a assinatura direto no painel e mantém acesso até o fim do período já pago.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#inicio" class="logo"><span class="logo-mark">FP</span> FinPulse</a>
+          <p>Gestão financeira descomplicada para micro e pequenas empresas brasileiras.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Produto</h4>
+          <a href="#recursos">Recursos</a>
+          <a href="#precos">Planos</a>
+          <a href="#faq">Perguntas frequentes</a>
+        </div>
+        <div class="footer-col">
+          <h4>Empresa</h4>
+          <a href="#inicio">Sobre o FinPulse</a>
+          <a href="#faq">Central de ajuda</a>
+          <a href="mailto:contato@finpulse.com.br">Contato</a>
+        </div>
+        <div class="footer-col">
+          <h4>Redes</h4>
+          <a href="#" rel="noopener">Instagram</a>
+          <a href="#" rel="noopener">LinkedIn</a>
+          <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 FinPulse Tecnologia Ltda. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById("menuMobile").classList.toggle("on");
+  }
+
+  function fecharMenu() {
+    document.getElementById("menuMobile").classList.remove("on");
+  }
+
+  function toggleFaq(botao) {
+    const item = botao.parentElement;
+    const aberto = item.classList.toggle("on");
+    botao.setAttribute("aria-expanded", aberto ? "true" : "false");
+  }
+</script>
+</body>
+</html>
